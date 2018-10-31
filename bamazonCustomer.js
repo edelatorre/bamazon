@@ -15,7 +15,15 @@ connection.connect(function(err) {
   function afterConnection() {
     connection.query("SELECT * FROM products", function(err, res) {
       if (err) throw err;
-      console.log(res);
+      //console.log(res);
+      
+        for (var key in res) {
+                for(var key2 in res[key]){
+                    console.log(`${key2}  -> ${res[key][key2]}`);
+                }
+            console.log("--------------------");
+        }
+      //console.log(res);
       inquirer.prompt([
  
         {
@@ -41,7 +49,7 @@ connection.connect(function(err) {
 
 
   function checkStock(IdProd, unidades) {
-    console.log("Checking stock of the product...\n");
+    console.log("Checking the stock of the product...\n");
     var query = connection.query("SELECT stock_quantity FROM products where ?",
     [
         {
@@ -58,7 +66,6 @@ connection.connect(function(err) {
           console.log('You can proceed with your purchase, there are enough units on stock')
       }else{
           console.log('Insufficient quantity!');
-          connection.end();
       }  
 
       connection.end();
