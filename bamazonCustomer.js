@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 require("dotenv").config();
+var inquirer = require("inquirer");
 
 let dataKeys = require("./keys.js");
 
@@ -15,6 +16,24 @@ connection.connect(function(err) {
     connection.query("SELECT * FROM products", function(err, res) {
       if (err) throw err;
       console.log(res);
+      inquirer.prompt([
+ 
+        {
+            type: "input",
+            name: "productId",
+            message: "Enter de ID of the product you want."
+        },
+    
+        {
+            type: "input",
+            name: "units",
+            message: "How many units of the product would you like to buy?"
+        }
+    
+        ]).then(function(purchase) {
+            console.log(`You want to purchase ${purchase.units} units of the product ID = ${purchase.productId}`);
+        });
       connection.end();
     });
-  }
+  };
+
