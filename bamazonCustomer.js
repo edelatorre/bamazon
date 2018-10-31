@@ -32,30 +32,36 @@ connection.connect(function(err) {
     
         ]).then(function(purchase) {
             console.log(`You want to purchase ${purchase.units} units of the product ID = ${purchase.productId}`);
-            checkStock(purchase.productId);
+            checkStock(purchase.productId, purchase.units);
+            
         });
       //connection.end();
     });
   };
 
 
-  function checkStock(IdProd) {
+  function checkStock(IdProd, unidades) {
     console.log("Checking stock of the product...\n");
     var query = connection.query("SELECT stock_quantity FROM products where ?",
     [
         {
             item_id: IdProd
         }
-    ]
+    ] 
     , function(err, res) {
       if (err) throw err;
       // Log all results of the SELECT statement
-      console.log(res);
-      var arreglo = Object.values(res[0])
-      var stock = arreglo[0]
-      console.log(stock)
-      console.log(Object.values(res[0])[0])
+      //console.log(res);
+      var stock = res[0].stock_quantity
+      console.log(`This product has ${stock} units on stock`);
+      if(stock >= unidades){
+          console.log('You can proceed with your purchase, there are enough units on stock')
+      }else{
+          console.log('Insufficient quantity!');
+          connection.end();
+      }  
+
       connection.end();
     });
-    console.log(query.sql);
+    //console.log(query.sql);
   }
