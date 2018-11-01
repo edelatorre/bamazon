@@ -21,7 +21,7 @@ connection.connect(function(err) {
                 for(var key2 in res[key]){
                     console.log(`${key2}  -> ${res[key][key2]}`);
                 }
-            console.log("--------------------");
+            console.log("-------------------------");
         }
       //console.log(res);
       inquirer.prompt([
